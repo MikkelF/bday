@@ -257,66 +257,56 @@
         }
 
         .house.gryffindor .hourglass-fill {
-            background:
-                radial-gradient(circle at 20% 50%, transparent 2px, rgba(255, 197, 0, 0.3) 2px, transparent 3px),
-                radial-gradient(circle at 80% 20%, transparent 1px, rgba(174, 0, 1, 0.4) 1px, transparent 2px),
-                radial-gradient(circle at 60% 80%, transparent 1.5px, rgba(255, 197, 0, 0.2) 1.5px, transparent 2.5px),
-                linear-gradient(to top, #740001, #D3A625);
-            background-size: 40px 40px, 30px 30px, 50px 50px, 100% 100%;
+            background-image: url('texture.jpg'), linear-gradient(to top, #740001, #D3A625);
+            background-blend-mode: overlay;
+            background-size: 200px 200px, 100% 100%;
+            background-repeat: repeat, no-repeat;
             box-shadow: 0 0 40px rgba(255, 197, 0, 0.6), inset 0 -10px 30px rgba(255, 197, 0, 0.3);
         }
 
         .house.slytherin .hourglass-fill {
-            background:
-                radial-gradient(circle at 20% 50%, transparent 2px, rgba(170, 170, 170, 0.3) 2px, transparent 3px),
-                radial-gradient(circle at 80% 20%, transparent 1px, rgba(26, 71, 42, 0.4) 1px, transparent 2px),
-                radial-gradient(circle at 60% 80%, transparent 1.5px, rgba(46, 204, 113, 0.2) 1.5px, transparent 2.5px),
-                linear-gradient(to top, #1a472a, #2ECC71);
-            background-size: 40px 40px, 30px 30px, 50px 50px, 100% 100%;
+            background-image: url('texture.jpg'), linear-gradient(to top, #1a472a, #2ECC71);
+            background-blend-mode: overlay;
+            background-size: 200px 200px, 100% 100%;
+            background-repeat: repeat, no-repeat;
             box-shadow: 0 0 40px rgba(46, 204, 113, 0.5), inset 0 -10px 30px rgba(170, 170, 170, 0.3);
         }
 
         .house.hufflepuff .hourglass-fill {
-            background:
-                radial-gradient(circle at 20% 50%, transparent 2px, rgba(236, 185, 57, 0.3) 2px, transparent 3px),
-                radial-gradient(circle at 80% 20%, transparent 1px, rgba(0, 0, 0, 0.4) 1px, transparent 2px),
-                radial-gradient(circle at 60% 80%, transparent 1.5px, rgba(240, 199, 94, 0.2) 1.5px, transparent 2.5px),
-                linear-gradient(to top, #000000, #ECB939);
-            background-size: 40px 40px, 30px 30px, 50px 50px, 100% 100%;
+            background-image: url('texture.jpg'), linear-gradient(to top, #000000, #ECB939);
+            background-blend-mode: overlay;
+            background-size: 200px 200px, 100% 100%;
+            background-repeat: repeat, no-repeat;
             box-shadow: 0 0 40px rgba(236, 185, 57, 0.6), inset 0 -10px 30px rgba(240, 199, 94, 0.3);
         }
 
         .house.ravenclaw .hourglass-fill {
-            background:
-                radial-gradient(circle at 20% 50%, transparent 2px, rgba(148, 107, 45, 0.3) 2px, transparent 3px),
-                radial-gradient(circle at 80% 20%, transparent 1px, rgba(14, 26, 64, 0.4) 1px, transparent 2px),
-                radial-gradient(circle at 60% 80%, transparent 1.5px, rgba(93, 173, 226, 0.2) 1.5px, transparent 2.5px),
-                linear-gradient(to top, #0e1a40, #5DADE2);
-            background-size: 40px 40px, 30px 30px, 50px 50px, 100% 100%;
+            background-image: url('texture.jpg'), linear-gradient(to top, #0e1a40, #5DADE2);
+            background-blend-mode: overlay;
+            background-size: 200px 200px, 100% 100%;
+            background-repeat: repeat, no-repeat;
             box-shadow: 0 0 40px rgba(93, 173, 226, 0.5), inset 0 -10px 30px rgba(148, 107, 45, 0.3);
         }
 
         .house.hogwarts .hourglass-fill {
-            background:
-                radial-gradient(circle at 20% 50%, transparent 2px, rgba(184, 134, 11, 0.3) 2px, transparent 3px),
-                radial-gradient(circle at 80% 20%, transparent 1px, rgba(75, 0, 130, 0.4) 1px, transparent 2px),
-                radial-gradient(circle at 60% 80%, transparent 1.5px, rgba(184, 134, 11, 0.2) 1.5px, transparent 2.5px),
-                linear-gradient(to top, #4B0082, #B8860B);
-            background-size: 40px 40px, 30px 30px, 50px 50px, 100% 100%;
+            background-image: url('texture.jpg'), linear-gradient(to top, #4B0082, #B8860B);
+            background-blend-mode: overlay;
+            background-size: 200px 200px, 100% 100%;
+            background-repeat: repeat, no-repeat;
             box-shadow: 0 0 40px rgba(184, 134, 11, 0.5), inset 0 -10px 30px rgba(184, 134, 11, 0.3);
         }
 
         @keyframes shimmer {
             0% {
-                background-position: 0 0, 0 0, 0 0, 0 0;
+                background-position: 0 0, 0 0;
             }
             100% {
-                background-position: 40px 40px, 30px 30px, 50px 50px, 0 0;
+                background-position: 200px 200px, 0 0;
             }
         }
 
         .hourglass-fill {
-            animation: shimmer 8s linear infinite;
+            animation: shimmer 12s linear infinite;
         }
     </style>
 </head>
