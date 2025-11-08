@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Points - Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            background: rgba(76, 175, 80, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .status.disconnected {
+            background: rgba(244, 67, 54, 0.8);
+        }
+
+        .house-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+        }
+
+        .house-section.gryffindor { border-color: #D3A625; }
+        .house-section.slytherin { border-color: #5D5D5D; }
+        .house-section.hufflepuff { border-color: #ECB939; }
+        .house-section.ravenclaw { border-color: #946B2D; }
+        .house-section.hogwarts { border-color: #B8860B; }
+
+        .house-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .house-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .house-section.gryffindor .house-name { color: #D3A625; }
+        .house-section.slytherin .house-name { color: #5D5D5D; }
+        .house-section.hufflepuff .house-name { color: #ECB939; }
+        .house-section.ravenclaw .house-name { color: #946B2D; }
+        .house-section.hogwarts .house-name { color: #B8860B; }
+
+        .current-points {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .point-btn {
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .point-btn:active {
+            transform: scale(0.95);
+        }
+
+        .point-btn.add {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .point-btn.add:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+        }
+
+        .subtract-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .point-btn.subtract {
+            background: linear-gradient(135deg, #f44336, #da190b);
+            color: white;
+        }
+
+        .point-btn.subtract:hover {
+            background: linear-gradient(135deg, #da190b, #c41100);
+        }
+
+        .controls {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .reset-btn {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        .reset-btn:active {
+            transform: scale(0.95);
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #f57c00, #e65100);
+        }
+
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .feedback.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>🪄 Admin Panel</h1>
+
+    <div class="status" id="status">Connecting...</div>
+
+    <div id="feedback" class="feedback"></div>
+
+    <div id="houses-container"></div>
+
+    <div class="controls">
+        <button class="reset-btn" onclick="resetAllPoints()">Reset All Points</button>
+    </div>
+
+    <script>
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${wsProtocol}//${window.location.host}`;
+        let ws;
+        const statusEl = document.getElementById('status');
+        const feedbackEl = document.getElementById('feedback');
+
+        const houses = ['gryffindor', 'slytherin', 'hufflepuff', 'ravenclaw', 'hogwarts'];
+        const housePoints = {};
+
+        function connect() {
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('Connected to server');
+                statusEl.textContent = 'Connected';
+                statusEl.classList.remove('disconnected');
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+
+                if (data.type === 'init') {
+                    Object.keys(data.points).forEach(house => {
+                        housePoints[house] = data.points[house];
+                        updatePointsDisplay(house, data.points[house]);
+                    });
+                } else if (data.type === 'pointsUpdated') {
+                    housePoints[data.house] = data.points;
+                    updatePointsDisplay(data.house, data.points);
+                }
+            };
+
+            ws.onclose = () => {
+                console.log('Disconnected from server');
+                statusEl.textContent = 'Disconnected - Reconnecting...';
+                statusEl.classList.add('disconnected');
+                setTimeout(connect, 2000);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        function createHouseSections() {
+            const container = document.getElementById('houses-container');
+            const houseNames = {
+                gryffindor: 'Gryffindor',
+                slytherin: 'Slytherin',
+                hufflepuff: 'Hufflepuff',
+                ravenclaw: 'Ravenclaw',
+                hogwarts: 'Hogwarts'
+            };
+
+            houses.forEach(house => {
+                const section = document.createElement('div');
+                section.className = `house-section ${house}`;
+                section.innerHTML = `
+                    <div class="house-header">
+                        <div class="house-name">${houseNames[house]}</div>
+                        <div class="current-points" id="points-${house}">0</div>
+                    </div>
+                    <div class="button-grid">
+                        <button class="point-btn add" onclick="addPoints('${house}', 1)">+1</button>
+                        <button class="point-btn add" onclick="addPoints('${house}', 5)">+5</button>
+                        <button class="point-btn add" onclick="addPoints('${house}', 10)">+10</button>
+                        <button class="point-btn add" onclick="addPoints('${house}', 50)">+50</button>
+                    </div>
+                    <div class="subtract-grid">
+                        <button class="point-btn subtract" onclick="addPoints('${house}', -1)">-1</button>
+                        <button class="point-btn subtract" onclick="addPoints('${house}', -5)">-5</button>
+                        <button class="point-btn subtract" onclick="addPoints('${house}', -10)">-10</button>
+                        <button class="point-btn subtract" onclick="addPoints('${house}', -50)">-50</button>
+                    </div>
+                `;
+                container.appendChild(section);
+                housePoints[house] = 0;
+            });
+        }
+
+        function updatePointsDisplay(house, points) {
+            const pointsEl = document.getElementById(`points-${house}`);
+            if (pointsEl) {
+                pointsEl.textContent = points;
+            }
+        }
+
+        function addPoints(house, points) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    type: 'updatePoints',
+                    house: house,
+                    points: points
+                }));
+
+                showFeedback(`${points > 0 ? '+' : ''}${points} points to ${house}!`);
+            } else {
+                showFeedback('Not connected to server!');
+            }
+        }
+
+        function resetAllPoints() {
+            if (confirm('Are you sure you want to reset all points to 0?')) {
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: 'reset'
+                    }));
+                    showFeedback('All points reset!');
+                }
+            }
+        }
+
+        function showFeedback(message) {
+            feedbackEl.textContent = message;
+            feedbackEl.classList.add('show');
+            setTimeout(() => {
+                feedbackEl.classList.remove('show');
+            }, 1000);
+        }
+
+        // Initialize
+        createHouseSections();
+        connect();
+    </script>
+</body>
+</html>

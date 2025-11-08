@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Points - Display</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        .houses-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .house {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 3px solid;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .house:hover {
+            transform: translateY(-5px);
+        }
+
+        .house.gryffindor {
+            border-color: #D3A625;
+            background: linear-gradient(135deg, rgba(116, 0, 1, 0.3), rgba(211, 166, 37, 0.2));
+        }
+
+        .house.slytherin {
+            border-color: #5D5D5D;
+            background: linear-gradient(135deg, rgba(26, 71, 42, 0.3), rgba(93, 93, 93, 0.2));
+        }
+
+        .house.hufflepuff {
+            border-color: #ECB939;
+            background: linear-gradient(135deg, rgba(236, 185, 57, 0.3), rgba(0, 0, 0, 0.2));
+        }
+
+        .house.ravenclaw {
+            border-color: #946B2D;
+            background: linear-gradient(135deg, rgba(14, 26, 64, 0.3), rgba(148, 107, 45, 0.2));
+        }
+
+        .house.hogwarts {
+            border-color: #B8860B;
+            background: linear-gradient(135deg, rgba(75, 0, 130, 0.3), rgba(184, 134, 11, 0.2));
+        }
+
+        .house-name {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .house.gryffindor .house-name { color: #D3A625; }
+        .house.slytherin .house-name { color: #5D5D5D; }
+        .house.hufflepuff .house-name { color: #ECB939; }
+        .house.ravenclaw .house-name { color: #946B2D; }
+        .house.hogwarts .house-name { color: #B8860B; }
+
+        .points-container {
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .points {
+            font-size: 5rem;
+            font-weight: bold;
+            transition: all 0.5s ease;
+            display: inline-block;
+        }
+
+        .point-change {
+            position: absolute;
+            top: -30px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0;
+            animation: floatUp 2s ease-out;
+            pointer-events: none;
+        }
+
+        .point-change.positive {
+            color: #4CAF50;
+        }
+
+        .point-change.negative {
+            color: #f44336;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            background: rgba(76, 175, 80, 0.8);
+        }
+
+        .status.disconnected {
+            background: rgba(244, 67, 54, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Connected</div>
+    <h1>🏰 House Points 🏰</h1>
+
+    <div class="houses-container">
+        <div class="house gryffindor" data-house="gryffindor">
+            <div class="house-name">Gryffindor</div>
+            <div class="points-container">
+                <div class="points" id="points-gryffindor">0</div>
+            </div>
+        </div>
+
+        <div class="house slytherin" data-house="slytherin">
+            <div class="house-name">Slytherin</div>
+            <div class="points-container">
+                <div class="points" id="points-slytherin">0</div>
+            </div>
+        </div>
+
+        <div class="house hufflepuff" data-house="hufflepuff">
+            <div class="house-name">Hufflepuff</div>
+            <div class="points-container">
+                <div class="points" id="points-hufflepuff">0</div>
+            </div>
+        </div>
+
+        <div class="house ravenclaw" data-house="ravenclaw">
+            <div class="house-name">Ravenclaw</div>
+            <div class="points-container">
+                <div class="points" id="points-ravenclaw">0</div>
+            </div>
+        </div>
+
+        <div class="house hogwarts" data-house="hogwarts">
+            <div class="house-name">Hogwarts</div>
+            <div class="points-container">
+                <div class="points" id="points-hogwarts">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${wsProtocol}//${window.location.host}`;
+        let ws;
+        const statusEl = document.getElementById('status');
+
+        function connect() {
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('Connected to server');
+                statusEl.textContent = 'Connected';
+                statusEl.classList.remove('disconnected');
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+
+                if (data.type === 'init') {
+                    // Initialize all points
+                    Object.keys(data.points).forEach(house => {
+                        updatePointsDisplay(house, data.points[house]);
+                    });
+                } else if (data.type === 'pointsUpdated') {
+                    // Update specific house with animation
+                    updatePointsDisplay(data.house, data.points, data.change);
+                }
+            };
+
+            ws.onclose = () => {
+                console.log('Disconnected from server');
+                statusEl.textContent = 'Disconnected';
+                statusEl.classList.add('disconnected');
+
+                // Attempt to reconnect after 2 seconds
+                setTimeout(connect, 2000);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        function updatePointsDisplay(house, points, change = null) {
+            const pointsEl = document.getElementById(`points-${house}`);
+            const houseEl = document.querySelector(`.house[data-house="${house}"]`);
+
+            if (pointsEl) {
+                pointsEl.textContent = points;
+
+                // Add pulse animation
+                pointsEl.classList.remove('pulse');
+                void pointsEl.offsetWidth; // Trigger reflow
+                pointsEl.classList.add('pulse');
+
+                // Show change indicator
+                if (change !== null && change !== 0) {
+                    const changeEl = document.createElement('div');
+                    changeEl.className = `point-change ${change > 0 ? 'positive' : 'negative'}`;
+                    changeEl.textContent = change > 0 ? `+${change}` : change;
+
+                    const container = pointsEl.parentElement;
+                    container.appendChild(changeEl);
+
+                    // Remove after animation
+                    setTimeout(() => {
+                        changeEl.remove();
+                    }, 2000);
+                }
+            }
+        }
+
+        // Connect on load
+        connect();
+    </script>
+</body>
+</html>
