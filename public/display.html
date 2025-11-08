@@ -44,10 +44,11 @@
             padding: 2rem;
             text-align: center;
             backdrop-filter: blur(10px);
-            border: 3px solid;
+            border: 5px solid;
             position: relative;
             overflow: hidden;
             transition: transform 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .house:hover {
@@ -55,28 +56,33 @@
         }
 
         .house.gryffindor {
-            border-color: #D3A625;
-            background: linear-gradient(135deg, rgba(116, 0, 1, 0.3), rgba(211, 166, 37, 0.2));
+            border-color: #FFC500;
+            background: linear-gradient(135deg, rgba(174, 0, 1, 0.6), rgba(211, 166, 37, 0.5));
+            box-shadow: 0 8px 32px rgba(174, 0, 1, 0.4), inset 0 0 60px rgba(255, 197, 0, 0.1);
         }
 
         .house.slytherin {
-            border-color: #5D5D5D;
-            background: linear-gradient(135deg, rgba(26, 71, 42, 0.3), rgba(93, 93, 93, 0.2));
+            border-color: #AAAAAA;
+            background: linear-gradient(135deg, rgba(26, 71, 42, 0.6), rgba(170, 170, 170, 0.4));
+            box-shadow: 0 8px 32px rgba(26, 71, 42, 0.4), inset 0 0 60px rgba(170, 170, 170, 0.1);
         }
 
         .house.hufflepuff {
-            border-color: #ECB939;
-            background: linear-gradient(135deg, rgba(236, 185, 57, 0.3), rgba(0, 0, 0, 0.2));
+            border-color: #F0C75E;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(236, 185, 57, 0.6));
+            box-shadow: 0 8px 32px rgba(236, 185, 57, 0.4), inset 0 0 60px rgba(240, 199, 94, 0.1);
         }
 
         .house.ravenclaw {
             border-color: #946B2D;
-            background: linear-gradient(135deg, rgba(14, 26, 64, 0.3), rgba(148, 107, 45, 0.2));
+            background: linear-gradient(135deg, rgba(14, 26, 64, 0.7), rgba(148, 107, 45, 0.5));
+            box-shadow: 0 8px 32px rgba(14, 26, 64, 0.4), inset 0 0 60px rgba(148, 107, 45, 0.1);
         }
 
         .house.hogwarts {
             border-color: #B8860B;
-            background: linear-gradient(135deg, rgba(75, 0, 130, 0.3), rgba(184, 134, 11, 0.2));
+            background: linear-gradient(135deg, rgba(75, 0, 130, 0.5), rgba(184, 134, 11, 0.5));
+            box-shadow: 0 8px 32px rgba(75, 0, 130, 0.4), inset 0 0 60px rgba(184, 134, 11, 0.1);
         }
 
         .house-name {
@@ -85,13 +91,29 @@
             margin-bottom: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 3px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
 
-        .house.gryffindor .house-name { color: #D3A625; }
-        .house.slytherin .house-name { color: #5D5D5D; }
-        .house.hufflepuff .house-name { color: #ECB939; }
-        .house.ravenclaw .house-name { color: #946B2D; }
-        .house.hogwarts .house-name { color: #B8860B; }
+        .house.gryffindor .house-name {
+            color: #FFC500;
+            text-shadow: 2px 2px 4px rgba(174, 0, 1, 0.8), 0 0 20px rgba(255, 197, 0, 0.5);
+        }
+        .house.slytherin .house-name {
+            color: #AAAAAA;
+            text-shadow: 2px 2px 4px rgba(26, 71, 42, 0.8), 0 0 20px rgba(170, 170, 170, 0.5);
+        }
+        .house.hufflepuff .house-name {
+            color: #F0C75E;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 20px rgba(236, 185, 57, 0.5);
+        }
+        .house.ravenclaw .house-name {
+            color: #946B2D;
+            text-shadow: 2px 2px 4px rgba(14, 26, 64, 0.8), 0 0 20px rgba(148, 107, 45, 0.5);
+        }
+        .house.hogwarts .house-name {
+            color: #B8860B;
+            text-shadow: 2px 2px 4px rgba(75, 0, 130, 0.8), 0 0 20px rgba(184, 134, 11, 0.5);
+        }
 
         .points-container {
             position: relative;
@@ -103,6 +125,32 @@
             font-weight: bold;
             transition: all 0.5s ease;
             display: inline-block;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .house.gryffindor .points {
+            color: #FFC500;
+            text-shadow: 3px 3px 6px rgba(174, 0, 1, 0.8), 0 0 30px rgba(255, 197, 0, 0.6);
+        }
+
+        .house.slytherin .points {
+            color: #2ECC71;
+            text-shadow: 3px 3px 6px rgba(26, 71, 42, 0.8), 0 0 30px rgba(46, 204, 113, 0.4);
+        }
+
+        .house.hufflepuff .points {
+            color: #F0C75E;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9), 0 0 30px rgba(236, 185, 57, 0.6);
+        }
+
+        .house.ravenclaw .points {
+            color: #5DADE2;
+            text-shadow: 3px 3px 6px rgba(14, 26, 64, 0.8), 0 0 30px rgba(93, 173, 226, 0.5);
+        }
+
+        .house.hogwarts .points {
+            color: #B8860B;
+            text-shadow: 3px 3px 6px rgba(75, 0, 130, 0.8), 0 0 30px rgba(184, 134, 11, 0.5);
         }
 
         .point-change {
@@ -161,9 +209,33 @@
         .status.disconnected {
             background: rgba(244, 67, 54, 0.8);
         }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            opacity: 0.5;
+        }
+
+        .fullscreen-btn:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
+    <button class="fullscreen-btn" id="fullscreenBtn" title="Toggle Fullscreen">⛶</button>
     <div class="status" id="status">Connected</div>
     <h1>🏰 House Points 🏰</h1>
 
@@ -275,6 +347,32 @@
                 }
             }
         }
+
+        // Fullscreen toggle
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                // Enter fullscreen
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error('Error entering fullscreen:', err);
+                });
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
+        // Update button on fullscreen change
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                fullscreenBtn.textContent = '⛶'; // Already fullscreen, show exit icon
+            } else {
+                fullscreenBtn.textContent = '⛶'; // Not fullscreen, show enter icon
+            }
+        });
 
         // Connect on load
         connect();
